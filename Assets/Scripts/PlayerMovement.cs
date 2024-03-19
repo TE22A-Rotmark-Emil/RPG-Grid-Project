@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,10 +13,12 @@ public class PlayerMovement : MonoBehaviour
     
     Vector3 movement = new();
 
+    float speed = 1;
+
     bool hasReducedInterval = false;
 
     void Start() {
-    
+        
     }
     void Update()
     {
@@ -38,10 +43,14 @@ public class PlayerMovement : MonoBehaviour
             moveDelay -= 1*Time.deltaTime;
         }
         if (moveDelay <= 0 && movement.magnitude > 0){
-            transform.Translate(movement);
+            transform.Translate(movement * speed);
             movement = new Vector3(0, 0, 0);
             moveDelay = 0.5f;
             hasReducedInterval = false;
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        SceneManager.LoadScene("Fight");
     }
 }

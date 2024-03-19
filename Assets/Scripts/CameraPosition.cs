@@ -28,22 +28,27 @@ public class CameraPosition : MonoBehaviour
             player.transform.position.y < center.transform.position.y){
             isOutOfBounds = true;
         }
-        Debug.Log(isOutOfBounds);
         Vector3 targetPosition = player.transform.position;
         targetPosition.z = -10;
         if (isOutOfBounds){
             if (Vector3.Distance(center.transform.position, player.transform.position) > 10.05){
-                transform.position = Vector3.Lerp(transform.position, targetPosition, 1f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, targetPosition, 2f * Time.deltaTime);
                 movement = Vector3.zero;
                 movement = new();
-                Debug.Log(Vector3.Distance(center.transform.position, player.transform.position));
             }
-            else{
+            else if (Vector3.Distance(center.transform.position, player.transform.position) < 10.0001){
                 transform.position = targetPosition;
-                movement = Vector3.zero;
-                Debug.Log("Perfect!! Everything worked as it should!!");
                 isOutOfBounds = false;
             }
+            else{
+                Centre();
+            }
         }
+    }
+
+    void Centre(){
+        Vector3 targetPosition = player.transform.position;
+        targetPosition.z = -10;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 15f * Time.deltaTime);
     }
 }
